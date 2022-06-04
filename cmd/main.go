@@ -40,7 +40,7 @@ func main() {
 	alpha, beta := dataTrainer.LinearRegression()
 	fmt.Println("alpha =", alpha, " beta =", beta)
 
-	// PLIOT DATA
+	// PLOT DATA
 	dataPlotter := dataplotter.New(
 		dataFrame,
 		alpha,

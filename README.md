@@ -1,8 +1,10 @@
+# Linear regression in Go
+
 L'analisi dei **big data** e il parallelo sviluppo dell'**intelligenza artificiale** sono i protagonisti delle innovazioni tecnologiche di quest'ultimo decennio. Chi approccia lo studio della materia, tuttavia, avrà prima o poi a che fare con il linguaggio **Python** che, usato spesso in ambito accademico, rappresenta il punto riferimento grazie alla disponibilità di una serie di librerie, tool e veri e propri framework per la manipolazione dei dati.
 
 Sebbene, in molti casi, l'uso di tali strumenti è inserito all'interno di procedure **batch** o **offline** , non possiamo escludere che alcuni servizi cloud possano necessitare di processi avanzati per la manipolazione dati **on demand**. In questo caso uno dei linguaggi più usati in ambito **backend** Cloud è **Go**.
 
-Compito di questo articolo è la verifica e la validazione di strumenti e librerie **Go** in grado di essere al passo con i più famosi disponibili per **Python**. Come dataset di riferimento ho scelto la lista dei film americani con il relativo costo di budget e incasso totale ai botteghini.
+Compito di questo articolo è la verifica e la validazione di strumenti e librerie **Go** in grado di essere al passo con i più famosi disponibili per **Python**. Come dataset di riferimento ho scelto la lista dei film americani con il relativo budget per la produzione e incasso totale ai botteghini.
 
 ## Data gathering
 Il primo passo che andremo a considerare è la raccolta di dati. Recuperare un **dataset** in rete è abbastanza semplice, può essere scaricato attraverso una semplice GET http, o ad esempio recuperato grazie ad apposite API di fornitori terzi. I nostri dati, una volta in nostro possesso, dovranno essere inseriti all'interno di un contenitore chiamato **dataframe**. Nel mondo **Python** la libreria di riferimento è [Pandas](https://pandas.pydata.org), nel nostro caso useremo invece **[Gota](https://github.com/go-gota/gota)**.
@@ -36,13 +38,13 @@ func (dm *DataMiner) GatherFromFile(
 Il dato restituito sarà un wrapper al dataframe che ne estenderà le funzionalità per poter essere poi passato al plotter.
 
 ## Data cleaning
-Il dato grezzo importato non sempre è pronto per l'analisi dei dati. Potrebbe,infatti, presentare valori non ammessi, includere transienti da filtrare o avere, semplicemente, un formato non corretto. Per questa fase sarà ancora utile il dataframe di `gota`.
+Il dato grezzo importato non sempre è pronto per l'analisi dei dati. Potrebbe,infatti, presentare **valori non ammessi**, includere **transienti da filtrare** o avere, semplicemente, un **formato non corretto**. Per questa fase sarà ancora utile il dataframe di `gota`.
 
 ### pkg/datacleaner
 In questo package è presente l'implementazione del metodo `Clean()` che provvederà ad applicare 3 filtri:
 
 * Un filtro che **rimuove caratteri di valuta e formattazione**. Questo step agisce attraverso il metodo `Capply()`che prende in input una funzione filtro da applicare iterativamente a tutte le colonne del dataframe. Internamente alla serie viene, poi, usato il metodo `Map()` che accetta un'ulteriore funzione che elabora iterativamente tutti gli elementi.
-* Un filtro che **converte il tipo di dato**. Il metodo `Mutate()` provvede a sostituire entrambe le serie nel dataframe applicando la conversione di tipo da `string` a `float64`.
+* Un filtro che **converte il tipo di dato**. Il metodo `Mutate()` provvede a sostituire entrambe le serie del dataframe applicando la conversione di tipo da `string` a `float64`.
 * Un filtro per **rimuovere valori indesiderati**. In questo caso la funzione filtro rimuove i film che hanno avuto un incasso nullo perché, ad esempio, non sono mai usciti nelle sale cinematografiche.
 
 ```go
@@ -179,7 +181,7 @@ func main() {
 	alpha, beta := dataTrainer.LinearRegression()
 	fmt.Println("alpha =", alpha, " beta =", beta)
 
-	// PLIOT DATA
+	// PLOT DATA
 	dataPlotter := dataplotter.New(
 		dataFrame,
 		alpha,
@@ -209,5 +211,9 @@ oppure compilato col comando
 
 `go build -o linear_regression ./cmd/`
 
+## Grafico finale
+
+![output graphic data](output.png)
+
 ## Conclusioni
-Abbiamo dimostrato
+Abbiamo dimostrato che, almeno per questo primo esempio di regressione lineare, anche in **Go** esistono gli strumenti adatti per la manipolazione dei dati, per l'elaborazione di funzioni di interpolazione e per la generazione di grafici. Tali strumenti ci permettono di implementare all'interno di servizi Cloud backend realizzati in linguaggio Go un vero e proprio sistema completo per la gestione dei dati **on demand**.
