@@ -217,3 +217,5 @@ oppure compilato col comando
 
 ## Conclusioni
 Abbiamo dimostrato che, almeno per questo primo esempio di regressione lineare, anche in **Go** esistono gli strumenti adatti per la manipolazione dei dati, per l'elaborazione di funzioni di interpolazione e per la generazione di grafici. Tali strumenti ci permettono di implementare all'interno di servizi Cloud backend realizzati in linguaggio Go un vero e proprio sistema completo per la gestione dei dati **on demand**.
+
+Il codice completo dell'esempio mostrato è disponibile all'interno del repository Github [github.com/henomis/linear-regression.go](https://github.com/henomis/linear-regression-go)
